@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'camunda' => [
+        'zeebe_rest_url' => env('CAMUNDA_ZEEBE_REST_URL', 'http://localhost:8080'),
+        'operate_url' => env('CAMUNDA_OPERATE_URL', 'http://localhost:8081'),
+        'tasklist_url' => env('CAMUNDA_TASKLIST_URL', 'http://localhost:8082'),
+    ],
+
 ];

@@ -4,6 +4,7 @@ A full-featured BPMN (Business Process Model and Notation) diagram editor built 
 
 ## Features
 
+- 🔐 **Authentication** - Secure login and registration system with Laravel Breeze
 - 🎨 **Interactive BPMN Editor** - Create and modify BPMN diagrams with drag-and-drop interface
 - 💾 **Save & Load** - Store diagrams in database with full CRUD operations
 - 📥 **Export** - Download diagrams as XML (.bpmn) files
@@ -16,6 +17,7 @@ A full-featured BPMN (Business Process Model and Notation) diagram editor built 
 ## Technology Stack
 
 - **Backend**: Laravel 12.46.0
+- **Authentication**: Laravel Breeze
 - **Frontend**: bpmn-js 17.0.0
 - **Database**: SQLite (configurable)
 - **Build Tool**: Vite 7.0.7
@@ -70,9 +72,24 @@ A full-featured BPMN (Business Process Model and Notation) diagram editor built 
    ```
 
 8. **Access the application**
-   - Open your browser and navigate to: `http://localhost:8000/bpmn`
+   - Open your browser and navigate to: `http://localhost:8000`
+   - You'll be redirected to the login page
+
+## Default Login Credentials
+
+A test user account has been created:
+- **Email**: `admin@example.com`
+- **Password**: `password`
+
+You can also register a new account by clicking "Register" on the login page.
 
 ## Usage
+
+### Authentication
+
+- Navigate to `http://localhost:8000` and log in with your credentials
+- All routes are protected by authentication
+- Use the dropdown menu in the header to access profile settings or logout
 
 ### Creating a New Diagram
 

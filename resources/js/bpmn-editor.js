@@ -70,7 +70,7 @@ class BpmnEditor {
         });
 
         // Load existing diagram or create new one
-        const existingXml = document.getElementById('existingXml')?.value;
+        const existingXml = window.existingXml || null;
         if (existingXml) {
             await this.loadDiagram(existingXml);
         } else {
@@ -125,6 +125,14 @@ class BpmnEditor {
             this.saveDiagram();
         });
 
+        // Deploy to Camunda button
+        const deployBtn = document.getElementById('deployBtn');
+        if (deployBtn) {
+            deployBtn.addEventListener('click', () => {
+                this.deployToCamunda();
+            });
+        }
+
         // Export button
         document.getElementById('exportBtn').addEventListener('click', () => {
             this.exportDiagram();
@@ -167,6 +175,37 @@ class BpmnEditor {
             const canvas = this.modeler.get('canvas');
             canvas.zoom('fit-viewport');
         });
+    }
+
+    async deployToCamunda() {
+        try {
+            const name = document.getElementById('diagramName').value.trim() || 'Untitled';
+            const { xml } = await this.modeler.saveXML({ format: true });
+
+            const response = await fetch(window.routeDeploy, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': window.csrfToken
+                },
+                body: JSON.stringify({
+                    xml_content: xml,
+                    name: name
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('✅ Process deployed to Camunda successfully!');
+                console.log('Deployment result:', result.data);
+            } else {
+                alert('❌ Deployment failed: ' + result.message);
+            }
+        } catch (err) {
+            console.error('Deployment error:', err);
+            alert('❌ Error deploying to Camunda: ' + err.message + '\n\nMake sure Camunda is running (docker compose up -d)');
+        }
     }
 
     async saveDiagram() {

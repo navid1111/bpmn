@@ -59,6 +59,7 @@
             <h1 style="font-size: 24px; font-weight: 600;">BPMN Editor</h1>
             <div>
                 <a href="{{ route('bpmn.index') }}" class="btn">← Back to List</a>
+                <a href="{{ route('camunda.dashboard') }}" class="btn btn-primary">🚀 Camunda Dashboard</a>
             </div>
         </div>
 
@@ -73,6 +74,7 @@
                    style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 300px; margin-right: 8px;">
             
             <button id="saveBtn" class="btn btn-success">💾 Save</button>
+            <button id="deployBtn" class="btn btn-primary">🚀 Deploy to Camunda</button>
             <button id="exportBtn" class="btn">📥 Export XML</button>
             <button id="newBtn" class="btn">📄 New Diagram</button>
             <button id="undoBtn" class="btn">↶ Undo</button>
@@ -87,7 +89,6 @@
 
         <!-- Hidden inputs -->
         <input type="hidden" id="diagramId" value="{{ isset($diagram) ? $diagram->id : '' }}">
-        <input type="hidden" id="existingXml" value="{{ isset($diagram) ? htmlspecialchars($diagram->xml_content) : '' }}">
     </div>
 
     <script>
@@ -97,6 +98,14 @@
         window.routeStore = '{{ route('api.bpmn.store') }}';
         window.routeUpdate = '{{ isset($diagram) ? route('api.bpmn.update', $diagram->id) : '' }}';
         window.routeIndex = '{{ route('bpmn.index') }}';
+        window.routeDeploy = '{{ route('camunda.deploy.xml') }}';
+        
+        // Store XML content in a way that preserves the actual XML
+        @if(isset($diagram) && $diagram->xml_content)
+        window.existingXml = {!! json_encode($diagram->xml_content) !!};
+        @else
+        window.existingXml = null;
+        @endif
     </script>
 </body>
 </html>
